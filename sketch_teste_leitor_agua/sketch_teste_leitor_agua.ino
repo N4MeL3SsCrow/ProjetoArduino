@@ -23,12 +23,13 @@ void setup()
   
   pinMode(5, INPUT);
   attachInterrupt(5, incrpulso, RISING); //Configura a porta digital 5, para interrupção
-  
-  // set the data rate for the SoftwareSerial port
-  mySerial.begin(115200);
+
 
   // Aguarda o ESP subir
   delay(2000);
+  
+  // set the data rate for the SoftwareSerial port
+  mySerial.begin(115200);
 
 }
 
