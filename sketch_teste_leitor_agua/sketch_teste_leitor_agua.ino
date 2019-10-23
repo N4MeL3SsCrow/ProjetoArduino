@@ -20,7 +20,7 @@ int myDelay = 1000; //Espera 1 segundo
 
 void setup()
 { 
-  Serial.begin(9600);
+  Serial.begin(115200);
   while (!Serial) {
     ; // wait for serial port to connect. Needed for Native USB only
   }
@@ -75,27 +75,26 @@ void loop ()
     
     volumeAcumulado = volumeAcumulado + vazaoagua;
     float custo = volumeAcumulado * 2.478;
+    
 
+    //PRODUCAO
+    //String json = "#@{'vazao' : '" + String(vazaoagua) + " Litros/seg', 'volume' : '" + String(volumeAcumulado) +" Litros ', 'custo' : 'R$ " + String(custo) + "' }@#" ;
+    
+    //TESTE
     teste1 = teste1 + 10.1;
     teste2 = teste2 + 11.2;
     teste3 = teste3 + 12.3;
-    
+    String json = "#@{'vazao' : '" + String(teste1) + " Litros/seg', 'volume' : '" + String(teste2) +" Litros ', 'custo' : 'R$ " + String(teste3) + "' }@#";
 
-    Serial.println("");
-    //Serial.println("#@{'vazao' : '" + String(vazaoagua) + " Litros/seg', 'volume' : '" + String(volumeAcumulado) +" Litros ', 'custo' : 'R$ " + String(custo) + "' }@#");
-    //mySerial.print("#@{'vazao' : '" + String(vazaoagua) + " Litros/seg', 'volume' : '" + String(volumeAcumulado) +" Litros ', 'custo' : 'R$ " + String(custo) + "' }@#");
 
-    //TESTE
-    mySerial.print("#@{'vazao' : '" + String(teste1) + " Litros/seg', 'volume' : '" + String(teste2) +" Litros ', 'custo' : 'R$ " + String(teste3) + "' }@#");
-    
+    //Envia JSON para o esp8266
+    mySerial.println(json);   
 
   }
 
   // Redireciona a saida serial do ESP8266 para a saida do Arduino
   if (mySerial.available())
     Serial.write(mySerial.read());
-
-  Serial.println("");
 
 }
 
