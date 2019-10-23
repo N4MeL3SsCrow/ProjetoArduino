@@ -3,6 +3,10 @@
 
 SoftwareSerial mySerial(2, 3); // RX, TX <- Usando as portas digitais 2 e 3 como seriais para conectar no ESP8266
 
+float teste1 = 0;
+float teste2 = 0;
+float teste3 = 0;
+
 int Pulso; //Variável para a quantidade de pulsos
 int j=0; //Variável para contagem
 float vazaoagua; //Variável para armazenar o valor em L/min
@@ -72,9 +76,17 @@ void loop ()
     volumeAcumulado = volumeAcumulado + vazaoagua;
     float custo = volumeAcumulado * 2.478;
 
+    teste1 = teste1 + 10.1;
+    teste2 = teste2 + 11.2;
+    teste3 = teste3 + 12.3;
+    
+
     Serial.println("");
-    Serial.println("#@{'vazao' : '" + String(vazaoagua) + " Litros/seg', 'volume' : '" + String(volumeAcumulado) +" Litros ', 'custo' : 'R$ " + String(custo) + "' }@#");
-    mySerial.print("#@{'vazao' : '" + String(vazaoagua) + " Litros/seg', 'volume' : '" + String(volumeAcumulado) +" Litros ', 'custo' : 'R$ " + String(custo) + "' }@#");
+    //Serial.println("#@{'vazao' : '" + String(vazaoagua) + " Litros/seg', 'volume' : '" + String(volumeAcumulado) +" Litros ', 'custo' : 'R$ " + String(custo) + "' }@#");
+    //mySerial.print("#@{'vazao' : '" + String(vazaoagua) + " Litros/seg', 'volume' : '" + String(volumeAcumulado) +" Litros ', 'custo' : 'R$ " + String(custo) + "' }@#");
+
+    //TESTE
+    mySerial.print("#@{'vazao' : '" + String(teste1) + " Litros/seg', 'volume' : '" + String(teste2) +" Litros ', 'custo' : 'R$ " + String(teste3) + "' }@#");
     
 
   }
