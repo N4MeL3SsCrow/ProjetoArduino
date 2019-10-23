@@ -22,7 +22,7 @@ void setup()
   }
   
   pinMode(5, INPUT);
-  attachInterrupt(5, incrpulso, RISING); //Configura a porta digital 2, para interrupção
+  attachInterrupt(5, incrpulso, RISING); //Configura a porta digital 5, para interrupção
   
   // set the data rate for the SoftwareSerial port
   mySerial.begin(115200);
@@ -43,8 +43,7 @@ void loop ()
   valormedia=valormedia+vazaoagua; //Soma a vazão para o calculo da valormedia
   j++;
   
-  Serial.print(vazaoagua); //Imprime na serial o valor da vazão
-  Serial.print(" L/segundos - "); //Imprime L/min
+  /*
   if(j==60)
   {
     valormedia = valormedia/60; //Tira a valormedia dividindo por 60
@@ -54,18 +53,33 @@ void loop ()
     valormedia = 0; //Torna variável valormedia = 0, para uma nova contagem
     j=0; //Torna a variável 0,para uma nova contagem
   }
+  */
+  
 
   /* Evina dados para o ESP8266 a cada 500 milisegundos (myDelay) */
   timeAtu = millis();
   if (timeAtu > (timeAnt + myDelay)){
 
     timeAnt = timeAtu;
+
+    Serial.print(vazaoagua); //Imprime na serial o valor da vazão
+    Serial.print(" L/segundos - "); //Imprime L/min
+    
     volumeAcumulado = volumeAcumulado + vazaoagua;
     float custo = volumeAcumulado * 2.478;
 
+    Serial.println("");
+    Serial.println("#@{'vazao' : '" + String(vazaoagua) + " Litros/seg', 'volume' : '" + String(volumeAcumulado) +" Litros ', 'custo' : 'R$ " + String(custo) + "' }@#");
     mySerial.print("#@{'vazao' : '" + String(vazaoagua) + " Litros/seg', 'volume' : '" + String(volumeAcumulado) +" Litros ', 'custo' : 'R$ " + String(custo) + "' }@#");
-     
+    
+
   }
+
+  // Redireciona a saida serial do ESP8266 para a saida do Arduino
+  if (mySerial.available())
+    Serial.write(mySerial.read());
+
+  Serial.println("");
 
 }
 
