@@ -27,6 +27,9 @@ void setup()
   // set the data rate for the SoftwareSerial port
   mySerial.begin(115200);
 
+  // Aguarda o ESP subir
+  delay(2000);
+
 }
 
 
@@ -63,7 +66,7 @@ void loop ()
     timeAnt = timeAtu;
 
     Serial.print(vazaoagua); //Imprime na serial o valor da vazão
-    Serial.print(" L/segundos - "); //Imprime L/min
+    Serial.println(" L/segundos"); //Imprime L/min
     
     volumeAcumulado = volumeAcumulado + vazaoagua;
     float custo = volumeAcumulado * 2.478;
