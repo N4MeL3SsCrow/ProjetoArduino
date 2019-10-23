@@ -25,8 +25,8 @@ void setup()
     ; // wait for serial port to connect. Needed for Native USB only
   }
   
-  pinMode(5, INPUT);
-  attachInterrupt(5, incrpulso, RISING); //Configura a porta digital 5, para interrupção
+  pinMode(4, INPUT);
+  attachInterrupt(0, incrpulso, RISING); //Configura a porta digital 5, para interrupção
 
 
   // Aguarda o ESP subir
@@ -41,27 +41,27 @@ void setup()
 void loop ()
 {
   Pulso = 0; //Começa do 0 variável para contar os giros das pás internas, ek segundos
-  //sei(); //liga interrupção
-  //delay (2000); //Espera 2 segundos
-  //cli(); //Desliga interrupção
+  sei(); //liga interrupção
+  delay (500); //Espera 500 milisegundos
+  cli(); //Desliga interrupção
   
-  //vazaoagua = Pulso / 5.5; //Converte para Litros/minuto
+  vazaoagua = Pulso / 5.5; //Converte para Litros/minuto
   
-  vazaoagua = Pulso / 0.02; //Converte para Litros/segundos
+  //vazaoagua = Pulso / 0.02; //Converte para Litros/segundos
   valormedia=valormedia+vazaoagua; //Soma a vazão para o calculo da valormedia
   j++;
   
-  /*
-  if(j==60)
-  {
-    valormedia = valormedia/60; //Tira a valormedia dividindo por 60
-    Serial.print("\n Media por minuto = "); //Imprime a frase valormedia por minuto =
-    Serial.print(valormedia); //Imprime o valor da valormedia
-    Serial.println(" Litros/segundos - "); //Imprime L/min
-    valormedia = 0; //Torna variável valormedia = 0, para uma nova contagem
-    j=0; //Torna a variável 0,para uma nova contagem
-  }
-  */
+
+  //if(j==60)
+ // {
+ //   valormedia = valormedia/60; //Tira a valormedia dividindo por 60
+ //   Serial.print("\n Media por minuto = "); //Imprime a frase valormedia por minuto =
+ //   Serial.print(valormedia); //Imprime o valor da valormedia
+ //   Serial.println(" Litros/segundos - "); //Imprime L/min
+ //   valormedia = 0; //Torna variável valormedia = 0, para uma nova contagem
+ //   j=0; //Torna a variável 0,para uma nova contagem
+ // }
+
   
 
   /* Evina dados para o ESP8266 a cada 500 milisegundos (myDelay) */
@@ -70,24 +70,25 @@ void loop ()
 
     timeAnt = timeAtu;
 
-    Serial.print(vazaoagua); //Imprime na serial o valor da vazão
-    Serial.println(" L/segundos"); //Imprime L/min
+    //Serial.print(vazaoagua); //Imprime na serial o valor da vazão
+    //Serial.println(" L/segundos"); //Imprime L/min
     
     volumeAcumulado = volumeAcumulado + vazaoagua;
     float custo = volumeAcumulado * 2.478;
     
 
     //PRODUCAO
-    //String json = "#@{'vazao' : '" + String(vazaoagua) + " Litros/seg', 'volume' : '" + String(volumeAcumulado) +" Litros ', 'custo' : 'R$ " + String(custo) + "' }@#" ;
+    String json = "#@{'vazao' : '" + String(vazaoagua) + " Litros/seg', 'volume' : '" + String(volumeAcumulado) +" Litros ', 'custo' : 'R$ " + String(custo) + "' }@#" ;
     
     //TESTE
-    teste1 = teste1 + 10.1;
-    teste2 = teste2 + 11.2;
-    teste3 = teste3 + 12.3;
-    String json = "#@{'vazao' : '" + String(teste1) + " Litros/seg', 'volume' : '" + String(teste2) +" Litros ', 'custo' : 'R$ " + String(teste3) + "' }@#";
+    //teste1 = teste1 + 10.1;
+    //teste2 = teste2 + 11.2;
+    //teste3 = teste3 + 12.3;
+    //String json = "#@{'vazao' : '" + String(teste1) + " Litros/seg', 'volume' : '" + String(teste2) +" Litros ', 'custo' : 'R$ " + String(teste3) + "' }@#";
 
 
     //Envia JSON para o esp8266
+    Serial.println(json);
     mySerial.println(json);   
 
   }
